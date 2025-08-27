@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>placeholderAI - AI Medical Assistant</title>
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6,Promise,fetch,Object.assign"></script>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        
+        .spinner-border {
+            -webkit-animation: spinner-border .75s linear infinite;
+            animation: spinner-border .75s linear infinite;
+        }
+        
+        @-webkit-keyframes spinner-border {
+            to { -webkit-transform: rotate(360deg); }
+        }
+        
+        @keyframes spinner-border {
+            to { transform: rotate(360deg); }
+        }
+        
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        
+        button, input, select, textarea {
+            font-family: inherit;
+            font-size: 100%;
+            line-height: 1.15;
+            margin: 0;
+        }
+        
+        
+        #visualizer {
+            -webkit-transform: scaleY(1);
+            -ms-transform: scaleY(1);
+            transform: scaleY(1);
+        }
+        
+        
+        .form-control, .form-select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        
+        
+        @supports not (display: grid) {
+            .row {
+                display: flex;
+                flex-wrap: wrap;
+            }
+            .col-md-6 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+        }
+        
+        
+        .form-control, .form-select {
+            background-color: #f9fafb !important; 
+            color: #1f2937 !important; 
+            border-color: #e5e7eb !important;
+        }
+        
+        .form-control::placeholder, .form-select::placeholder {
+            color: #6b7280 !important; 
+            opacity: 1;
+        }
+        
+        
+        @keyframes recording-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        
+        .recording-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ef4444;
+            margin-right: 8px;
+            animation: recording-pulse 1.5s infinite;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            200: '#c7d2fe',
+                            300: '#a5b4fc',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81',
+                        },
+                        secondary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex-shrink-0 flex items-center">
+                        <span class="text-2xl font-bold text-primary-600">placeholder<span class="text-secondary-600">AI</span></span>
+                    </a>
+                </div>
+                <div class="flex items-center">
+                    <a href="index.html" class="text-gray-500 hover:text-primary-600 transition-colors">
+                        <i class="fas fa-home mr-1"></i> Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <ul class="nav nav-tabs mb-6 border-b border-gray-200" id="mainTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active text-gray-500 hover:text-primary-600 font-medium py-3 px-4 border-b-2 border-transparent hover:border-primary-600 transition-colors" id="diagnosis-tab" data-bs-toggle="tab" data-bs-target="#diagnosis" type="button" role="tab">
+                    <i class="fas fa-stethoscope mr-2"></i> Diagnosis Assistant
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link text-gray-500 hover:text-primary-600 font-medium py-3 px-4 border-b-2 border-transparent hover:border-primary-600 transition-colors" id="report-tab" data-bs-toggle="tab" data-bs-target="#report" type="button" role="tab">
+                    <i class="fas fa-file-medical-alt mr-2"></i> Report Generator
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="mainTabsContent">
+            
+            <div class="tab-pane fade show active" id="diagnosis" role="tabpanel">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="card bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
+                        <div class="card-body p-6">
+                            <form id="diagnosisForm">
+                                <h5 class="card-title text-xl font-bold text-gray-800 mb-4 pb-2 border-b border-gray-200">Patient Information</h5>
+                                
+                                
+                                <div class="mb-4">
+                                    <label class="form-label text-gray-700 font-medium">Required Information</label>
+                                    <div class="grid grid-cols-2 gap-3 mt-2">
+                                        <div>
+                                            <input type="number" class="form-control w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-200 transition-all" id="age" placeholder="Age" required>
+                                        </div>
+                                        <div>
+                                            <select class="form-select w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-200 transition-all" id="gender" required>
+                                                <option value="">Select Gender</option>
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <input type="number" class="form-control w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-200 transition-all" id="weight" placeholder="Weight (kg)" required>
+                                        </div>
+                                        <div>
+                                            <input type="number" class="form-control w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-200 transition-all" id="height" placeholder="Height (cm)" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="mb-4">
+                                    <label class="form-label text-gray-700 font-medium">Symptoms</label>
+                                    <textarea class="form-control w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-200 transition-all" id="symptoms" rows="3" placeholder="Describe your symptoms..." required></textarea>
+                                    <div class="grid grid-cols-2 gap-3 mt-2">
+                                        <div>
+                                            <input type="text" class="form-control w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-200 transition-all" id="duration" placeholder="Duration of symptoms" required>
+                                        </div>
+                                        <div>
+                                            <select class="form-select w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-200 transition-all" id="intensity" required>
+                                                <option value="">Select Intensity</option>
+                                                <option value="mild">Mild</option>
+                                                <option value="moderate">Moderate</option>
+                                                <option value="severe">Severe</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="mb-4">
+                                    <label class="form-label text-gray-700 font-medium">Optional Information</label>
+                                    <div class="grid grid-cols-3 gap-3 mt-2">
+                                        <div>
+                                            <input type="text" class="form-control w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-200 transition-all" id="bp" placeholder="Blood Pressure">
+                                        </div>
+                                        <div>
+                                            <input type="number" class="form-control w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-200 transition-all" id="glucose" placeholder="Blood Glucose">
+                                        </div>
+                                        <div>
+                                            <input type="number" class="form-control w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-200 transition-all" id="temperature" placeholder="Temperature (°C)">
+                                        </div>
+                                        <div class="col-span-3">
+                                            <textarea class="form-control w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-200 transition-all" id="preexisting" rows="2" placeholder="Preexisting conditions"></textarea>
+                                        </div>
+                                        <div class="col-span-3">
+                                            <textarea class="form-control w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-200 transition-all" id="additional" rows="2" placeholder="Additional information"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-full py-3 rounded-lg bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 transition-all duration-300 transform hover:-translate-y-1">
+                                    <i class="fas fa-search-plus mr-2"></i> Get Diagnosis
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
+                        <div class="card-body p-6">
+                            <h5 class="card-title text-xl font-bold text-gray-800 mb-4 pb-2 border-b border-gray-200">Diagnosis Results</h5>
+                            <div id="loading" class="text-center d-none py-12">
+                                <div class="spinner-border text-primary mx-auto" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-4 text-gray-600">Analyzing patient data...</p>
+                            </div>
+                            <div id="results" class="d-none">
+                                <div id="diagnosisContent" class="bg-gray-50 p-4 rounded-lg border-l-4 border-primary-500"></div>
+                                
+                                
+                                <div id="followUpQuestionsDialog" class="follow-up-dialog mt-6 d-none">
+                                    <h6>Please answer these follow-up questions</h6>
+                                    <p class="text-gray-600 mb-4">Your answers will help refine the diagnosis</p>
+                                    <form id="followUpQuestionsForm">
+                                        <div id="followUpQuestionsContainer">
+                                            
+                                        </div>
+                                        <div class="mt-4">
+                                            <button type="submit" class="btn btn-primary w-full py-2 rounded-lg bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 transition-all duration-300">
+                                                <i class="fas fa-paper-plane mr-2"></i> Submit Answers
+                                            </button>
+                                        </div>
+                                    </form>
+                                    <div id="updatedDiagnosis" class="mt-4 d-none">
+                                        <h6 class="mb-2 font-medium text-gray-700">Updated Diagnosis</h6>
+                                        <div id="updatedDiagnosisContent" class="bg-gray-50 p-4 rounded-lg border-l-4 border-green-500"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6">
+                                    <div class="flex justify-between items-center mb-3">
+                                        <h6 class="font-medium text-gray-700">AI Follow-up Questions</h6>
+                                        <button id="viewSummaryBtn" class="text-sm text-primary-600 hover:text-primary-800 transition-colors">
+                                            <i class="fas fa-eye mr-1"></i> View Summary
+                                        </button>
+                                    </div>
+                                    <div id="diagnosisSummaryContainer" class="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200 d-none">
+                                        <h6 class="text-sm font-medium text-blue-800 mb-2">Generated Summary</h6>
+                                        <div id="diagnosisSummaryContent" class="text-sm text-blue-700"></div>
+                                    </div>
+                                    <div id="aiQuestions" class="mb-4"></div>
+                                    <h6 class="mb-3 font-medium text-gray-700">Your Questions</h6>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control rounded-l-lg border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-200 transition-all" id="followUpQuestion" placeholder="Ask a follow-up question...">
+                                        <button class="btn btn-outline-primary rounded-r-lg border border-primary-500 text-primary-600 hover:bg-primary-600 hover:text-white transition-colors" type="button" id="askFollowUp">
+                                            <i class="fas fa-paper-plane mr-1"></i> Ask
+                                        </button>
+                                    </div>
+                                    <div id="followUpResponse" class="mt-4 bg-gray-50 p-3 rounded-lg border-l-4 border-secondary-500 d-none"></div>
+                                </div>
+                            </div>
+                            <div id="error" class="alert alert-danger d-none rounded-lg"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="tab-pane fade" id="report" role="tabpanel">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="card bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
+                        <div class="card-body p-6">
+                            <h5 class="card-title text-xl font-bold text-gray-800 mb-4 pb-2 border-b border-gray-200">Medical Report Generator</h5>
+                            <form id="reportForm">
+                                <div class="mb-4">
+                                    <label class="form-label text-gray-700 font-medium">Report Type</label>
+                                    <select class="form-select w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-200 transition-all" id="reportType" required>
+                                        <option value="">Select Report Type</option>
+                                        <option value="radiology">Radiology Report</option>
+                                        <option value="pathology">Pathology Report</option>
+                                        <option value="laboratory">Laboratory Report</option>
+                                        <option value="surgical">Surgical Report</option>
+                                        <option value="other">Other Medical Report</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-4 d-none" id="customReportNameContainer">
+                                    <label class="form-label text-gray-700 font-medium">Custom Report Name</label>
+                                    <input type="text" class="form-control w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-200 transition-all" id="customReportName" placeholder="Enter custom report name">
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label text-gray-700 font-medium">Patient Information</label>
+                                    <div class="grid grid-cols-2 gap-3 mt-2">
+                                        <div>
+                                            <input type="text" class="form-control w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-200 transition-all" id="patientName" placeholder="Patient Name" required>
+                                        </div>
+                                        <div>
+                                            <input type="text" class="form-control w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-200 transition-all" id="patientId" placeholder="Patient ID" required>
+                                        </div>
+                                        <div>
+                                            <input type="number" class="form-control w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-200 transition-all" id="reportPatientAge" placeholder="Patient Age" required>
+                                        </div>
+                                        <div>
+                                            <select class="form-select w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-200 transition-all" id="reportPatientGender" required>
+                                                <option value="">Select Gender</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label text-gray-700 font-medium">Voice Recording</label>
+                                    
+                                    <div class="grid grid-cols-1 gap-2">
+                                        <button type="button" class="btn btn-outline-primary rounded-lg border border-primary-500 text-primary-600 hover:bg-primary-600 hover:text-white transition-colors py-3" id="startRecording">
+                                            <i class="fas fa-microphone mr-2"></i> Start Recording
+                                        </button>
+                                        <button type="button" class="btn btn-outline-danger d-none rounded-lg border border-red-500 text-red-600 hover:bg-red-600 hover:text-white transition-colors py-3" id="stopRecording">
+                                            <i class="fas fa-stop-circle mr-2"></i> Stop Recording
+                                        </button>
+                                        <div id="recordingStatus" class="text-gray-500 text-sm mt-2"></div>
+                                    </div>
+                                    
+                                    
+                                    <div class="mt-3 p-3 bg-blue-50 border border-blue-200 rounded text-sm text-blue-700">
+                                        <strong>Instructions:</strong>
+                                        <ol class="list-decimal list-inside mt-1">
+                                            <li>Click "Start Recording" and allow microphone access when prompted</li>
+                                            <li>Speak clearly into your microphone</li>
+                                            <li>Click "Stop Recording" when finished</li>
+                                            <li>Wait for transcription to complete</li>
+                                        </ol>
+                                        <p class="mt-2"><strong>Note:</strong> If microphone access is blocked, click the microphone icon in your browser's address bar and select "Allow".</p>
+                                    </div>
+                                </div>
+
+                                <div id="audioVisualizationContainer" class="mb-4 d-none">
+                                    <canvas id="visualizer" width="300" height="60" class="w-full rounded-lg bg-gray-100"></canvas>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label text-gray-700 font-medium">Transcribed Text</label>
+                                    <textarea class="form-control w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-200 transition-all" id="transcribedText" rows="4" placeholder="Transcribed text will appear here..."></textarea>
+                                    <small class="text-gray-500">You can edit the transcribed text before generating the report.</small>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label text-gray-700 font-medium">Additional Notes</label>
+                                    <textarea class="form-control w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring focus:ring-primary-200 transition-all" id="additionalNotes" rows="2" placeholder="Any additional notes..."></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-full py-3 rounded-lg bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 transition-all duration-300 transform hover:-translate-y-1" id="generateReport">
+                                    <i class="fas fa-file-medical mr-2"></i> Generate Report
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
+                        <div class="card-body p-6">
+                            <h5 class="card-title text-xl font-bold text-gray-800 mb-4 pb-2 border-b border-gray-200">Generated Report</h5>
+                            <div id="reportLoading" class="text-center d-none py-12">
+                                <div class="spinner-border text-primary mx-auto" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-4 text-gray-600">Generating your report...</p>
+                            </div>
+                            <div id="reportContent" class="d-none">
+                                <div class="mb-4">
+                                    <div id="formattedReport" class="border p-4 bg-gray-50 rounded-lg" contenteditable="true" style="min-height: 300px;"></div>
+                                </div>
+                                <div class="flex justify-end">
+                                    <button class="btn btn-outline-primary rounded-lg border border-primary-500 text-primary-600 hover:bg-primary-600 hover:text-white transition-colors" id="downloadPdf">
+                                        <i class="fas fa-download mr-2"></i> Download as PDF
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="reportError" class="alert alert-danger d-none rounded-lg"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center">
+                        <span class="text-xl font-bold text-white">placeholder<span class="text-secondary-400">AI</span></span>
+                    </div>
+                    <p class="mt-1 text-sm text-gray-400">
+                        Supercharging medicine with AI technology
+                    </p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="index.html" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fas fa-home mr-1"></i> Home
+                    </a>
+                    <a href="index.html#features" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fas fa-list-alt mr-1"></i> Features
+                    </a>
+                    <a href="index.html#benefits" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fas fa-chart-line mr-1"></i> Benefits
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 

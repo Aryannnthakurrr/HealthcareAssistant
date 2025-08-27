@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>placeholderAI - Supercharging Medicine with AI</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-in-right {
+            animation: slideInRight 0.8s ease-out;
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .slide-in-left {
+            animation: slideInLeft 0.8s ease-out;
+        }
+        
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            200: '#c7d2fe',
+                            300: '#a5b4fc',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81',
+                        },
+                        secondary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <span class="text-2xl font-bold text-primary-600">placeholder<span class="text-secondary-600">AI</span></span>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <div class="hidden md:ml-6 md:flex md:space-x-8">
+                        <a href="#features" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-primary-600 hover:border-primary-600 transition-colors">
+                            Features
+                        </a>
+                        <a href="#benefits" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-primary-600 hover:border-primary-600 transition-colors">
+                            Benefits
+                        </a>
+                        <a href="#testimonials" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-primary-600 hover:border-primary-600 transition-colors">
+                            Testimonials
+                        </a>
+                    </div>
+                    <div class="ml-6">
+                        <a href="app.html" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+                            Launch App
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    
+    <div class="hero-gradient">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="slide-in-left">
+                    <h1 class="text-4xl md:text-5xl font-bold text-white leading-tight">
+                        Supercharging Medicine with Artificial Intelligence
+                    </h1>
+                    <p class="mt-4 text-xl text-indigo-100">
+                        Revolutionizing healthcare with cutting-edge AI technology for more accurate diagnoses and comprehensive medical reports.
+                    </p>
+                    <div class="mt-8 flex flex-col sm:flex-row gap-4">
+                        <a href="app.html?tab=diagnosis" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-primary-700 bg-white hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-stethoscope mr-2"></i> Diagnosis Assistant
+                        </a>
+                        <a href="app.html?tab=report" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-primary-700 bg-white hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-file-medical-alt mr-2"></i> Report Generator
+                        </a>
+                    </div>
+                </div>
+                <div class="slide-in-right flex justify-center">
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="bg-white/10 backdrop-blur-sm p-8 rounded-xl shadow-lg flex flex-col items-center text-white">
+                            <i class="fas fa-brain text-5xl mb-4"></i>
+                            <h3 class="text-xl font-semibold">AI-Powered Diagnosis</h3>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-sm p-8 rounded-xl shadow-lg flex flex-col items-center text-white">
+                            <i class="fas fa-file-medical text-5xl mb-4"></i>
+                            <h3 class="text-xl font-semibold">Smart Reports</h3>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-sm p-8 rounded-xl shadow-lg flex flex-col items-center text-white">
+                            <i class="fas fa-microphone text-5xl mb-4"></i>
+                            <h3 class="text-xl font-semibold">Voice Recognition</h3>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-sm p-8 rounded-xl shadow-lg flex flex-col items-center text-white">
+                            <i class="fas fa-shield-alt text-5xl mb-4"></i>
+                            <h3 class="text-xl font-semibold">Secure & Private</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <section id="features" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                    Powerful AI-Powered Features
+                </h2>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
+                    Our platform offers advanced tools to support medical professionals and improve patient care.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <div class="feature-card bg-white rounded-lg shadow-md p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-md bg-primary-100 text-primary-600 flex items-center justify-center mb-4">
+                        <i class="fas fa-brain text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">AI Diagnosis Assistant</h3>
+                    <p class="text-gray-600">
+                        Get intelligent diagnostic suggestions based on patient symptoms and medical history, powered by advanced machine learning algorithms.
+                    </p>
+                </div>
+
+                
+                <div class="feature-card bg-white rounded-lg shadow-md p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-md bg-secondary-100 text-secondary-600 flex items-center justify-center mb-4">
+                        <i class="fas fa-file-medical text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Medical Report Generator</h3>
+                    <p class="text-gray-600">
+                        Generate comprehensive, professional medical reports in seconds with our AI-powered report generation system.
+                    </p>
+                </div>
+
+                
+                <div class="feature-card bg-white rounded-lg shadow-md p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-md bg-green-100 text-green-600 flex items-center justify-center mb-4">
+                        <i class="fas fa-microphone text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Voice-to-Text Transcription</h3>
+                    <p class="text-gray-600">
+                        Dictate your medical notes and have them instantly transcribed with high accuracy using our advanced speech recognition technology.
+                    </p>
+                </div>
+
+                
+                <div class="feature-card bg-white rounded-lg shadow-md p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-md bg-yellow-100 text-yellow-600 flex items-center justify-center mb-4">
+                        <i class="fas fa-comments text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Interactive Follow-up</h3>
+                    <p class="text-gray-600">
+                        Engage in interactive follow-up conversations with our AI to clarify diagnoses and get additional medical insights.
+                    </p>
+                </div>
+
+                
+                <div class="feature-card bg-white rounded-lg shadow-md p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-md bg-red-100 text-red-600 flex items-center justify-center mb-4">
+                        <i class="fas fa-shield-alt text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Secure & Private</h3>
+                    <p class="text-gray-600">
+                        Your medical data is protected with enterprise-grade security and encryption, ensuring patient privacy and HIPAA compliance.
+                    </p>
+                </div>
+
+                
+                <div class="feature-card bg-white rounded-lg shadow-md p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-md bg-blue-100 text-blue-600 flex items-center justify-center mb-4">
+                        <i class="fas fa-download text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Export & Integration</h3>
+                    <p class="text-gray-600">
+                        Easily export reports in PDF format or integrate with your existing electronic health record (EHR) systems.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section id="benefits" class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                    Benefits for Healthcare Professionals
+                </h2>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
+                    See how placeholderAI can transform your medical practice and improve patient outcomes.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="slide-in-left">
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-primary-50 rounded-lg p-4 flex flex-col items-center justify-center">
+                                <i class="fas fa-clock text-4xl text-primary-600 mb-2"></i>
+                                <span class="text-lg font-semibold text-gray-800">60%</span>
+                                <span class="text-sm text-gray-600 text-center">Time Saved</span>
+                            </div>
+                            <div class="bg-secondary-50 rounded-lg p-4 flex flex-col items-center justify-center">
+                                <i class="fas fa-chart-line text-4xl text-secondary-600 mb-2"></i>
+                                <span class="text-lg font-semibold text-gray-800">40%</span>
+                                <span class="text-sm text-gray-600 text-center">Improved Accuracy</span>
+                            </div>
+                            <div class="bg-green-50 rounded-lg p-4 flex flex-col items-center justify-center">
+                                <i class="fas fa-user-md text-4xl text-green-600 mb-2"></i>
+                                <span class="text-lg font-semibold text-gray-800">35%</span>
+                                <span class="text-sm text-gray-600 text-center">More Patient Time</span>
+                            </div>
+                            <div class="bg-blue-50 rounded-lg p-4 flex flex-col items-center justify-center">
+                                <i class="fas fa-hospital text-4xl text-blue-600 mb-2"></i>
+                                <span class="text-lg font-semibold text-gray-800">25%</span>
+                                <span class="text-sm text-gray-600 text-center">Reduced Workload</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-in-right">
+                    <div class="space-y-6">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary-500 text-white">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-900">Save Time</h3>
+                                <p class="mt-2 text-base text-gray-500">
+                                    Reduce documentation time by up to 60% with automated report generation and voice transcription.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary-500 text-white">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-900">Improve Accuracy</h3>
+                                <p class="mt-2 text-base text-gray-500">
+                                    Enhance diagnostic accuracy with AI-powered suggestions based on the latest medical research.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary-500 text-white">
+                                    <i class="fas fa-user-md"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-900">Focus on Patients</h3>
+                                <p class="mt-2 text-base text-gray-500">
+                                    Spend more time with patients and less time on paperwork, improving the quality of care.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary-500 text-white">
+                                    <i class="fas fa-hospital"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-900">Reduce Administrative Burden</h3>
+                                <p class="mt-2 text-base text-gray-500">
+                                    Streamline documentation processes and reduce administrative workload for healthcare professionals.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section id="testimonials" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                    What Healthcare Professionals Are Saying
+                </h2>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
+                    Real feedback from medical professionals using our platform
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <div class="bg-gray-50 rounded-lg p-6 shadow-sm border border-gray-100">
+                    <div class="flex items-center mb-4">
+                        <div class="text-primary-500">
+                            <i class="fas fa-quote-left text-2xl"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        "The voice-to-text feature has significantly reduced my documentation time. The AI-generated reports are comprehensive and require minimal editing."
+                    </p>
+                    <div class="flex items-center">
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-gray-900">Some Department</h3>
+                            <p class="text-sm text-gray-500">xyz Hospital</p>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="bg-gray-50 rounded-lg p-6 shadow-sm border border-gray-100">
+                    <div class="flex items-center mb-4">
+                        <div class="text-primary-500">
+                            <i class="fas fa-quote-left text-2xl"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        "The diagnostic assistant is a good tool for getting a second opinion on a diagnosis and making sure no points have been overlooked."
+                    </p>
+                    <div class="flex items-center">
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-gray-900">Some Medicine Practice</h3>
+                            <p class="text-sm text-gray-500">xyz Medical Center</p>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="bg-gray-50 rounded-lg p-6 shadow-sm border border-gray-100">
+                    <div class="flex items-center mb-4">
+                        <div class="text-primary-500">
+                            <i class="fas fa-quote-left text-2xl"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        "Implementation across our hospital has reduced documentation time by x% and has helped with y."
+                    </p>
+                    <div class="flex items-center">
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-gray-900">Hospital Administration</h3>
+                            <p class="text-sm text-gray-500">xyz Medical Center</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="py-16 bg-primary-600">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+                    Ready to Supercharge Your Medical Practice?
+                </h2>
+                <p class="mt-4 max-w-2xl text-xl text-indigo-100 mx-auto">
+                    Start using placeholderAI today and experience the future of healthcare technology.
+                </p>
+                <div class="mt-8 flex justify-center">
+                    <a href="app.html" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-primary-700 bg-white hover:bg-gray-50 transition-colors">
+                        Launch Application
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center">
+                        <span class="text-2xl font-bold text-white">placeholder<span class="text-secondary-400">AI</span></span>
+                    </div>
+                    <p class="mt-2 text-gray-400">
+                        Revolutionizing healthcare with cutting-edge AI technology for more accurate diagnoses and comprehensive medical reports.
+                    </p>
+                    <div class="mt-4 flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-300 uppercase tracking-wider">Product</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="#features" class="text-gray-400 hover:text-white transition-colors">Features</a></li>
+                        <li><a href="#benefits" class="text-gray-400 hover:text-white transition-colors">Benefits</a></li>
+                        <li><a href="#testimonials" class="text-gray-400 hover:text-white transition-colors">Testimonials</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-300 uppercase tracking-wider">Support</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Help Center</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
+                <p>placeholderAI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript to handle smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // JavaScript to handle tab parameter in URL for app.html
+        document.querySelectorAll('a[href^="app.html"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href.includes('?tab=')) {
+                    const tab = href.split('?tab=')[1];
+                    localStorage.setItem('activeTab', tab);
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
